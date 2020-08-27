@@ -21,9 +21,9 @@ public:
         for (int i = 1; i <= len; i++) {
             for (int j = 1; j <= amount; j++) {
                 if (j >= coins[i-1])
-                    dp[i][j] = dp[i-1][j] + dp[i][j-coins[i-1]];
+                    dp[i][j] = dp[i-1][j] + dp[i][j-coins[i-1]]; // 选 + 不选 
                 else
-                    dp[i][j] = dp[i-1][j];
+                    dp[i][j] = dp[i-1][j]; // 不选 
             }
         }
         return dp[len][amount];

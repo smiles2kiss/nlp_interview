@@ -11,16 +11,14 @@ public:
             stack.push_back(nums[i]);
         }
         if (stack.size() > k) {
-            vector<int> result;
-            result.insert(result.begin(), stack.begin(), stack.begin() + k);
+            vector<int> result(stack.begin(), stack.begin() + k);
             return result;
         }
         return stack;
     }
     vector<int> merge(vector<int> nums1, vector<int> nums2) {
         vector<int> result;
-        int i = 0; 
-        int j = 0;
+        int i = 0, j = 0;
         int n1 = nums1.size();
         int n2 = nums2.size();
         while (i < n1 && j < n2) {
@@ -45,7 +43,7 @@ public:
                 if (temp1 == n1 && temp2 == n2) {
                     result.push_back(nums1[i]);
                     i++;
-                } else if (temp1 == n1 && temp2 < n2) {
+                } else if (temp1 == n1 && temp2 != n2) {
                     result.push_back(nums2[j]);
                     j++;
                 } else if (temp1 != n1 && temp2 == n2) {
@@ -76,37 +74,25 @@ public:
         int len2 = nums2.size();
         int min_pos = 0;
         int max_pos = len1;
-        if (k > len2) 
-            min_pos = k - len2;
-        if (len1 > k)
-            max_pos = k;
+        if (k > len2) min_pos = k - len2;
+        if (len1 > k) max_pos = k;
 
-        vector<int> max;
-
+        vector<int> ans;
         for (int i = min_pos; i <= max_pos; i++) {
             int j = k - i;
             vector<int> result1 = pick_max(nums1, i);
             vector<int> result2 = pick_max(nums2, j);
             vector<int> result  = merge(result1, result2);
 
-            if (max.size() == 0) {
-                max = result;
-            } else {
+            if (ans.size() == 0) ans = result;
+            else {
                 int flag = 0;
-                for (int t = 0; t < result.size(); t++) {
-                    if (result[t] > max[t]) {
-                        flag = 1;
-                        break;
-                    } else if (result[t] < max[t]) {
-                        flag = -1;
-                        break;
-                    }
-                }
-                if (flag == 1)
-                    max = result;
+                for (int t = 0; t < result.size(); t++)
+                    if (result[t] > ans[t]) { flag = 1; break; }
+                    else if (result[t] < ans[t]) { flag = -1; break;}
+                if (flag == 1) ans = result;
             }
         }
-        
-        return max;
+        return ans;
     }
 };
