@@ -7,15 +7,10 @@ public:
         
         int sum = 0;
         for (auto num: nums) sum = sum + num;
-        int target = sum / 2;
-        if (sum % 2 != 0)
-            return false;
+        if (sum % 2 == 1) return false;
 
-        vector<vector<int>> dp;
-        for (int i = 0; i <= len; i++) {
-            vector<int> temp(target + 1, 0);
-            dp.push_back(temp);
-        }
+        int target = sum / 2;
+        vector<vector<int>> dp(len+1, vector<int>(target+1, 0));
 
         for (int i = 1; i <= len; i++) {
             for (int j = 1; j <= target; j++) {

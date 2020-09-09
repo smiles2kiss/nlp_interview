@@ -1,44 +1,24 @@
 class Solution {
 public:
-    bool searchMatrix(vector<vector<int>>& matrix, int target) {
-        int column = matrix.size();
-        if (column == 0)
-            return false;
-        int row = matrix[0].size();
-        if (row == 0)
-            return false;
-
-        int back_start = 0;
-        int back_end = column - 1;
-        while (back_start <= back_end) {
-            int mid = (back_start + back_end) / 2;
-            if (target == matrix[back_start][row-1]) 
-                return true;
-            if (target == matrix[mid][row-1])
-                return true;
-            if (target == matrix[back_end][row-1])
-                return true;
-            if (target < matrix[back_start][row-1]) 
-                back_end = back_start - 1;
-            else if (target > matrix[back_start][row-1] && target < matrix[mid][row-1]){
-                back_end = mid - 1;
-            } else
-                back_start = mid + 1;
+    void setZeroes(vector<vector<int>>& matrix) {
+        int len1 = matrix.size();
+        int len2 = matrix[0].size();
+        unordered_set<int> rows;
+        unordered_set<int> cols;
+        for (int i = 0; i < len1; i++) {
+            for (int j = 0; j < len2; j++) {
+                if (matrix[i][j] == 0) {
+                    rows.insert(i);
+                    cols.insert(j);
+                }
+            }
         }
-        if (back_start >= column)
-            return false;
 
-        int start = 0;
-        int end = row - 1;
-        while (start <= end) {
-            int mid = (start + end) / 2;
-            if (target == matrix[back_start][mid]) 
-                return true;
-            else if (target > matrix[back_start][mid])
-                start = mid + 1;
-            else
-                end = mid - 1;
+        for (auto row:rows) {
+            for (int col = 0; col < len2; col++) matrix[row][col] = 0;
         }
-        return false;
+        for (auto col:cols) {
+            for (int row = 0; row < len1; row++) matrix[row][col] = 0;
+        }
     }
 };

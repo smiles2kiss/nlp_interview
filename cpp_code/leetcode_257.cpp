@@ -9,36 +9,30 @@
  */
 class Solution {
 public:
-    vector<vector<int>> nums;
-    vector<int> s;
+    vector<vector<int>> results;
+    vector<int> temp;
     void preOrder(TreeNode* root) {
-        if (root != NULL) {
-            s.push_back(root->val);
-            if (root->left == NULL && root->right == NULL) {
-                // 在叶子节点添加路径
-                nums.push_back(s);
-                s.pop_back();
-            } else {
-                preOrder(root->left);
-                preOrder(root->right);
-                s.pop_back();
-            }
-        } else {
-        }
+        if (!root) return;
+        temp.push_back(root->val);
+        if (!root->left && !root->right) 
+            results.push_back(temp);
+        preOrder(root->left);
+        preOrder(root->right);
+        temp.pop_back();
     }
     vector<string> binaryTreePaths(TreeNode* root) {
-        vector<string> result;
+        vector<string> outputs;
+        if (!root) return outputs;
         preOrder(root);
-        for (int i = 0; i < nums.size(); i++) {
-            string str;
-            for (int j = 0; j < nums[i].size(); j++) {
-                if (j != nums[i].size() - 1) 
-                    str = str + to_string(nums[i][j]) + "->";
-                else 
-                    str = str + to_string(nums[i][j]);
+        for (auto result:results) {
+            string output = "";
+            for (int t = 0; t < result.size(); t++) {
+                int num = result[t];
+                if (t == 0) output += to_string(num);
+                else output += "->" + to_string(num);
             }
-            result.push_back(str);
+            outputs.push_back(output);
         }
-        return result;
+        return outputs;
     }
 };
